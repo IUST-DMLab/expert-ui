@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="node_modules/bootstrap-rtl/dist/css/bootstrap-rtl.min.css">
+    <link rel="stylesheet" href="node_modules/angular-ui-bootstrap/dist/ui-bootstrap-csp.css">
+
+    <script type="text/javascript" src="node_modules/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="node_modules/bootstrap/dist/js/bootstrap.js"></script>
+    <script type="text/javascript" src="node_modules/angular/angular.min.js"></script>
+    <script type="text/javascript" src="node_modules/angular-route/angular-route.min.js"></script>
+    <script type="text/javascript" src="node_modules/angular-sanitize/angular-sanitize.js"></script>
+
+    <script type="text/javascript" src="node_modules/angular-paging/dist/paging.min.js"></script>
+
+    <script type="text/javascript" src="node_modules/angular-ui-bootstrap/dist/ui-bootstrap.js"></script>
+    <script type="text/javascript" src="node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script>
+
+    <link rel="stylesheet" href="styles/main.css">
+
+    <script type="text/javascript" src="scripts/app/app.js"></script>
+    <script type="text/javascript" src="scripts/app/service/rest.js"></script>
+    <script type="text/javascript" src="scripts/app/controller/main.js"></script>
+
+</head>
+<body ng-app="expert">
+
+<div ng-controller="MainController">
+    <div class="container">
+        <table cellpadding="10" cellspacing="10" style="width: 760px; margin:0 auto;">
+            <tr>
+                <td>
+                    <div paging
+                         page="data.pageNo"
+                         page-size="data.pageSize"
+                         total="data.totalSize"
+                         paging-action="reload(page-1)">
+                    </div>
+                </td>
+                <td>
+                    <form ng-submit="reload(data.searchPageNo-1)">
+                        صفحه:
+                        <input placeholder="page"
+                               ng-model="data.searchPageNo"
+                               style="width: 50px; border:solid 1px #ddd; height: 35px;">
+                    </form>
+                </td>
+                <td>
+                    <strong>
+                        تعداد کل : {{data.totalSize}}
+                    </strong>
+                </td>
+            </tr>
+        </table>
+
+        <table class="table" ng-if="data">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>مقدار</th>
+                <th>context</th>
+                <th>subject</th>
+                <th>وضعیت</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat='a in data.data'>
+                <td>{{(data.page * data.pageSize + $index)+1}}</td>
+                <td>
+                    <span ng-if="a.triple.object.type!='Resource'">{{a.object.triple.value}}</span>
+                    <a ng-if="a.triple.object.type=='Resource'">{{a.triple.object.value}}</a>
+                </td>
+                <td>
+                    <a ng-href="{{a.triple.context}}">{{a.triple.context}}</a>
+                </td>
+                <td>
+                    <a ng-href="{{a.triple.subject}}">{{a.triple.subject}}</a>
+                </td>
+                <td>
+                    <span>{{a.triple.vote}}</span>
+                    <button type="button" value=""></button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+    <div ng-if="!authenticated" class="block-screen"></div>
+
+    <div ng-if="!authenticated" class="container">
+        <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2" style="margin-top: 100px;">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <div class="panel-title">ورود به سیستم</div>
+                </div>
+                <div style="padding-top:30px" class="panel-body">
+                    <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
+                    <form class="form-horizontal" ng-submit="login(username, password)">
+                        <div style="margin-bottom: 25px" class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                            <input ng-model="username" ng-required="true" type="text" class="form-control"
+                                   placeholder="نام کاربری">
+                        </div>
+                        <div style="margin-bottom: 25px" class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                            <input ng-model="password" ng-required="true" type="password" class="form-control"
+                                   placeholder="کلمه عبور">
+                        </div>
+                        <div style="margin-top:10px" class="form-group">
+                            <div class="col-sm-12 controls">
+                                <input type="submit" class="btn btn-success" value="ورود">
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,88 @@
+@import "fonts";
+
+* {
+  font-family: IRANSans-web, Sahel, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 14px;
+}
+
+body {
+  //direction: rtl;
+}
+
+.entity {
+  border: solid 1px lightgray;
+  border-radius: 2px;
+  margin: 2px 0;
+  padding: 2px;
+}
+
+.title {
+  font-size: 16pt;
+  font-weight: bold;
+}
+
+.subtitle {
+  color: grey;
+  font-size: 14px;
+  font-weight: normal;
+}
+
+.description {
+  color: #262626;
+  font-size: 12px;
+  font-weight: normal;
+}
+
+.key{
+  color:#122b40;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.value{
+  font-size: 12px;
+  font-weight: normal;
+}
+
+.image-container{
+  float: right;
+  margin: 10px 0 10px 10px;
+  
+  img{
+    border: none;
+    width: 150px;
+  }
+}
+
+div.block-screen {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: #aaa;
+  opacity: 0.7;
+}
+
+/**/
+.loading {
+  position: absolute;
+  top: 10px;
+  left: 0;
+  right: 0;
+  text-align: center;
+
+  span {
+    background: -moz-linear-gradient(center bottom, #fef1d1 0pt, #fdebbd 100%) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left bottom, left top, from(#fef1d1), to(#fdebbd));
+    color: #000;
+    border-radius: 4px;
+    font-family: tahoma;
+    font-size: 10px;
+    padding: 5px;
+    border: solid 1px #ddad4e;
+    box-shadow: 0 0 4px 0px #ddd;
+    margin: 0 auto;
+  }
+}
+
