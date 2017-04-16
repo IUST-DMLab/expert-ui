@@ -31,7 +31,7 @@ app
         };
 
         $scope.reload = function (page) {
-            RestService.current($scope.authToken, page, 10)
+            RestService.current($scope.authToken, page, 20)
                 .success(function (data) {
                     $scope.copy = angular.copy(data);
                     $scope.data = data;
