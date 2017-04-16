@@ -4,47 +4,53 @@ app
         $scope.authenticated = false;
         $scope.username = '';
         $scope.password = '';
+        $scope.voteList = ['None', 'Reject', 'Approve', 'VIPReject', 'VIPApprove'];
 
         $scope.login = function (username, password) {
-            //var username = $scope.username;
-            //var password = $scope.password;
-            //console.log($scope);
-            //console.log('user, pass : ', username, password);
-
             $scope.authToken = '';
             $scope.roles = [];
 
-            $http.get('http://194.225.227.161:8092/services/rs/v1/experts/login', {
-                headers: {'Authorization': 'Basic ' + btoa(username + ':' + password)}
-            }).then(function (response) {
+            RestService.login(username, password).then(T, F);
+
+            function T(response) {
                 $scope.authToken = response.headers('x-auth-token');
                 if ($scope.authToken) {
                     $scope.roles = response.data;
                     $scope.authenticated = true;
+                    $scope.error = undefined;
 
                     $scope.reload(0);
                 }
-            });
+            }
 
-
-            //RestService.login(username, password)
-            //    .success(function (data) {
-            //        console.log(data);
-            //        $scope.data = data;
-            //    });
-
+            function F(error, status) {
+                $scope.authToken = '';
+                $scope.authenticated = false;
+                $scope.error = {error: error, status: status};
+            }
         };
 
         $scope.reload = function (page) {
-
             RestService.current($scope.authToken, page, 10)
                 .success(function (data) {
+                    $scope.copy = angular.copy(data);
                     $scope.data = data;
                     $scope.data.pageNo = $scope.data.page + 1;
                     $scope.data.searchPageNo = $scope.data.pageNo;
                 });
-        }
+        };
 
+        $scope.save = function (index, identifier, vote) {
+            RestService.vote($scope.authToken, identifier, vote)
+                .success(function (data) {
+                    //$scope.data.data[index].vote = data.vote;
+                    $scope.reload($scope.data.pageNo);
+                });
+        };
+
+        $scope.revert = function (index) {
+            $scope.data.data[index] = $scope.copy.data[index];
+        }
 
     });
 

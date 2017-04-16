@@ -26,7 +26,7 @@
     <script type="text/javascript" src="scripts/app/controller/main.js"></script>
 
 </head>
-<body ng-app="expert">
+<body ng-app="expertApp">
 
 <div ng-controller="MainController">
     <div class="container">
@@ -60,28 +60,38 @@
             <thead>
             <tr>
                 <th>#</th>
-                <th>مقدار</th>
-                <th>context</th>
                 <th>subject</th>
+                <th>predicate</th>
+                <th>object</th>
                 <th>وضعیت</th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
             <tr ng-repeat='a in data.data'>
                 <td>{{(data.page * data.pageSize + $index)+1}}</td>
                 <td>
+                    <a ng-href="{{a.triple.subject}}">{{a.triple.subject|mapPrefix}}</a>
+                </td>
+                <td>
+                    <a ng-href="{{a.triple.predicate}}">{{a.triple.predicate|mapPrefix}}</a>
+                </td>
+                <td>
                     <span ng-if="a.triple.object.type!='Resource'">{{a.object.triple.value}}</span>
-                    <a ng-if="a.triple.object.type=='Resource'">{{a.triple.object.value}}</a>
+                    <a ng-if="a.triple.object.type=='Resource'">{{a.triple.object.value|mapPrefix}}</a>
                 </td>
                 <td>
-                    <a ng-href="{{a.triple.context}}">{{a.triple.context}}</a>
+                    <span ng-if='!editing[$index]'>{{a.vote}}</span>
+                    <select ng-if='editing[$index]' ng-model="a.vote" ng-options="s for s in voteList">
+                        <option value="" selected="selected"></option>
+                    </select>
+                    <!--<input ng-if='editing[$index]' type="checkbox" ng-checked="a.approved" ng-model="a.approved">-->
                 </td>
                 <td>
-                    <a ng-href="{{a.triple.subject}}">{{a.triple.subject}}</a>
-                </td>
-                <td>
-                    <span>{{a.triple.vote}}</span>
-                    <button type="button" value=""></button>
+                    <button ng-show='!editing[$index]' class="btn btn-danger" ng-click="editing[$index]=true;">ویرایش</button>
+                    <button ng-show='editing[$index]' class="btn btn-success"
+                            ng-click="editing[$index]=false;save($index, a.identifier, a.vote)">تایید</button>
+                    <button ng-show='editing[$index]' class="btn" ng-click="editing[$index]=false;revert($index)">انصراف</button>
                 </td>
             </tr>
             </tbody>
@@ -95,7 +105,7 @@
         <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2" style="margin-top: 100px;">
             <div class="panel panel-info">
                 <div class="panel-heading">
-                    <div class="panel-title">ورود به سیستم</div>
+                    <div class="panel-title">ورود به سیستم خبرگان</div>
                 </div>
                 <div style="padding-top:30px" class="panel-body">
                     <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>

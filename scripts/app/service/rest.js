@@ -41,15 +41,15 @@ app.service('RestService', ['$http', function ($http) {
 
     /**/
 
-    //this.login = function (username, password) {
-    //    var req = {
-    //        method: 'GET',
-    //        url: baseURl + '/services/rs/v1/experts/login',
-    //        headers: {'Authorization': 'Basic ' + btoa(username + ':' + password)}
-    //    };
-    //
-    //    return http(req);
-    //};
+    this.login = function (username, password) {
+        var req = {
+            method: 'GET',
+            url: baseURl + '/services/rs/v1/experts/login',
+            headers: {'Authorization': 'Basic ' + btoa(username + ':' + password)}
+        };
+
+        return http(req);
+    };
 
     this.current = function (authToken, pageIndex, pageSize) {
         var req = {
@@ -61,6 +61,21 @@ app.service('RestService', ['$http', function ($http) {
             params: {
                 page: pageIndex,
                 pageSize: pageSize
+            }
+        };
+        return http(req);
+    };
+
+    this.vote = function (authToken, identifier, vote) {
+        var req = {
+            method: 'GET',
+            url: baseURl + '/services/rs/v1/experts/vote',
+            headers: {
+                "x-auth-token": authToken
+            },
+            params: {
+                identifier: identifier,
+                vote: vote
             }
         };
         return http(req);
