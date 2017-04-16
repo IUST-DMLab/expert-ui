@@ -41,6 +41,15 @@ app.service('RestService', ['$http', function ($http) {
 
     /**/
 
+    this.getPrefixes = function(){
+        var req = {
+            method: 'GET',
+            url: 'http://194.225.227.161:8090/mapping/rest/v1/prefixes'
+        };
+
+        return http(req);
+    };
+
     this.login = function (username, password) {
         var req = {
             method: 'GET',
@@ -76,6 +85,20 @@ app.service('RestService', ['$http', function ($http) {
             params: {
                 identifier: identifier,
                 vote: vote
+            }
+        };
+        return http(req);
+    };
+
+    this.requestMore = function (authToken, count) {
+        var req = {
+            method: 'GET',
+            url: baseURl + '/services/rs/v1/experts/triples/new',
+            headers: {
+                "x-auth-token": authToken
+            },
+            params: {
+                count: count
             }
         };
         return http(req);

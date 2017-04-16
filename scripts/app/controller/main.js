@@ -48,22 +48,17 @@ app
                 });
         };
 
+        $scope.requestMore = function () {
+            if (confirm('آیا می‌خواهید تعداد بیشتری رابطه به شما تخصیص داده شود؟'))
+                RestService.requestMore($scope.authToken, 50)
+                    .success(function (data) {
+                        //$scope.data.data[index].vote = data.vote;
+                        $scope.reload(0);
+                    });
+        };
+
         $scope.revert = function (index) {
             $scope.data.data[index] = $scope.copy.data[index];
         }
 
     });
-
-
-function getParameterByName(name, url) {
-    if (!url) {
-        url = window.location.href;
-    }
-    name = name.replace(/[\[\]]/g, "\\$&");
-    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-        results = regex.exec(url);
-    if (!results) return null;
-    if (!results[2]) return '';
-    return decodeURIComponent(results[2].replace(/\+/g, " "));
-}
-

@@ -29,7 +29,7 @@
 <body ng-app="expertApp">
 
 <div ng-controller="MainController">
-    <div class="container">
+    <div ng-show="authenticated" class="container">
         <table cellpadding="10" cellspacing="10" style="width: 760px; margin:0 auto;">
             <tr>
                 <td>
@@ -42,16 +42,17 @@
                 </td>
                 <td>
                     <form ng-submit="reload(data.searchPageNo-1)">
-                        صفحه:
+                        <span>صفحه:</span>
                         <input placeholder="page"
                                ng-model="data.searchPageNo"
                                style="width: 50px; border:solid 1px #ddd; height: 35px;">
                     </form>
                 </td>
                 <td>
-                    <strong>
-                        تعداد کل : {{data.totalSize}}
-                    </strong>
+                    <strong>تعداد کل : {{data.totalSize}}</strong>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-warning" ng-click="requestMore()">درخواست رابطه بیشتر</button>
                 </td>
             </tr>
         </table>
@@ -70,13 +71,13 @@
             <tbody>
             <tr ng-repeat='a in data.data'>
                 <td>{{(data.page * data.pageSize + $index)+1}}</td>
-                <td>
+                <td class="ltr">
                     <a ng-href="{{a.triple.subject}}">{{a.triple.subject|mapPrefix}}</a>
                 </td>
-                <td>
+                <td class="ltr">
                     <a ng-href="{{a.triple.predicate}}">{{a.triple.predicate|mapPrefix}}</a>
                 </td>
-                <td>
+                <td class="ltr">
                     <span ng-if="a.triple.object.type!='Resource'">{{a.object.triple.value}}</span>
                     <a ng-if="a.triple.object.type=='Resource'">{{a.triple.object.value|mapPrefix}}</a>
                 </td>
@@ -88,10 +89,14 @@
                     <!--<input ng-if='editing[$index]' type="checkbox" ng-checked="a.approved" ng-model="a.approved">-->
                 </td>
                 <td>
-                    <button ng-show='!editing[$index]' class="btn btn-danger" ng-click="editing[$index]=true;">ویرایش</button>
+                    <button ng-show='!editing[$index]' class="btn btn-danger" ng-click="editing[$index]=true;">ویرایش
+                    </button>
                     <button ng-show='editing[$index]' class="btn btn-success"
-                            ng-click="editing[$index]=false;save($index, a.identifier, a.vote)">تایید</button>
-                    <button ng-show='editing[$index]' class="btn" ng-click="editing[$index]=false;revert($index)">انصراف</button>
+                            ng-click="editing[$index]=false;save($index, a.identifier, a.vote)">تایید
+                    </button>
+                    <button ng-show='editing[$index]' class="btn" ng-click="editing[$index]=false;revert($index)">
+                        انصراف
+                    </button>
                 </td>
             </tr>
             </tbody>
