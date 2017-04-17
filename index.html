@@ -71,14 +71,14 @@
             <tbody>
             <tr ng-repeat='a in data.data'>
                 <td>{{(data.page * data.pageSize + $index)+1}}</td>
-                <td class="ltr">
+                <td class="ltr right">
                     <a ng-href="{{a.triple.subject | triple}}">{{a.triple.subject|mapPrefix}}</a>
                 </td>
-                <td class="ltr">
+                <td class="ltr right">
                     <a ng-href="{{a.triple.predicate}}">{{a.triple.predicate|mapPrefix}}</a>
                 </td>
-                <td class="ltr">
-                    <span ng-if="a.triple.object.type!='Resource'">{{a.object.triple.value}}</span>
+                <td class="ltr right">
+                    <span ng-if="a.triple.object.type!='Resource'">{{a.triple.object.value}}</span>
                     <a ng-if="a.triple.object.type=='Resource'">{{a.triple.object.value|mapPrefix}}</a>
                 </td>
                 <td>
