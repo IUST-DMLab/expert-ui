@@ -1,0 +1,39 @@
+<div>
+    <div ng-hide="true">
+        <table cellpadding="10" cellspacing="10" style="width: 760px; margin:0 auto;">
+            <tr>
+                <td>
+                    <div paging
+                         page="data.pageNo"
+                         page-size="data.pageSize"
+                         total="data.totalSize"
+                         paging-action="reload(page-1)">
+                    </div>
+                </td>
+                <td>
+                    <form ng-submit="reload(data.searchPageNo-1)">
+                        <span>صفحه:</span>
+                        <input placeholder="page"
+                               ng-model="data.searchPageNo"
+                               style="width: 50px; border:solid 1px #ddd; height: 35px;">
+                    </form>
+                </td>
+                <td>
+                    <strong>تعداد کل : {{data.totalSize}}</strong>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-warning" ng-click="requestMore()">درخواست رابطه بیشتر</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div ng-if="data">
+        <md-list-item class="md-1-line" ng-repeat="subject in data.subjects.list" ng-click="loadTriples(subject)">
+            <div class="md-list-item-text" layout="column">
+                <div class="ltr right" style="white-space: nowrap">
+                    <span>{{subject.id | mapPrefix}}</span>
+                </div>
+            </div>
+        </md-list-item>
+    </div>
+</div>

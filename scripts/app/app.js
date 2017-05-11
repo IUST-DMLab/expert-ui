@@ -1,10 +1,11 @@
-var app = angular.module('expertApp', ['ngRoute', 'ui.bootstrap', 'bw.paging']);
+var app = angular.module('expertApp', ['ngRoute', 'ngMaterial','ngAnimate','ngAria','ngMessages', 'ngCookies', 'ngMdIcons']);
 
 app.filter("mapPrefix", function (RestService) {
     var prefixes = null, // DATA RECEIVED ASYNCHRONOUSLY AND CACHED HERE
         serviceInvoked = false;
 
     function realFilter(text) { // REAL FILTER LOGIC
+        //if(!text) return text;
         for (var link in prefixes) {
             var p = prefixes[link];
             if (text.indexOf(link) !== -1)
@@ -19,8 +20,8 @@ app.filter("mapPrefix", function (RestService) {
             if (!serviceInvoked) {
                 serviceInvoked = true;
                 // CALL THE SERVICE THAT FETCHES THE DATA HERE
-                RestService.getPrefixes().success(function (result) {
-                    prefixes = result;
+                RestService.getPrefixes().then(function (result) {
+                    prefixes = result.data;
                 });
             }
             return "-"; // PLACEHOLDER WHILE LOADING, COULD BE EMPTY

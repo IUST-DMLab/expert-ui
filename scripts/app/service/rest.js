@@ -25,23 +25,30 @@ app.service('RestService', ['$http', function ($http) {
         $('body').append('<div id="loading" class="loading"><span>loading...</span></div>');
 
         $('#loading').fadeIn();
-        return $http(req).error(function () {
-            handelError();
+        return $http(req)
+            .then(SUCCESS, ERROR);
+
+        function ERROR(response) {
             $('#loading').fadeOut();
-        }).success(function () {
-            handelSuccess();
+            handelError(response);
+            return response;
+        }
+
+        function SUCCESS(response) {
             $('#loading').fadeOut();
-        });
+            handelSuccess(response);
+            return response;
+        }
     }
 
     function post(url, data) {
         self.ingoing++;
-        return $http.post(url, data).error(handelError).success(handelSuccess);
+        return $http.post(url, data).then(handelSuccess, handelError);
     }
 
     /**/
 
-    this.getPrefixes = function(){
+    this.getPrefixes = function () {
         var req = {
             method: 'GET',
             url: 'http://194.225.227.161:8090/mapping/rest/v1/prefixes'
@@ -60,14 +67,23 @@ app.service('RestService', ['$http', function ($http) {
         return http(req);
     };
 
-    this.current = function (authToken, pageIndex, pageSize) {
+    this.getSubjects = function (authToken) {
+        var req = {
+            method: 'GET',
+            url: baseURl + '/services/rs/v1/experts/subjects/current',
+            headers: {"x-auth-token": authToken}
+        };
+
+        return http(req);
+    };
+
+    this.getTriples = function (authToken, subjectId, pageIndex, pageSize) {
         var req = {
             method: 'GET',
             url: baseURl + '/services/rs/v1/experts/triples/current',
-            headers: {
-                "x-auth-token": authToken
-            },
+            headers: {"x-auth-token": authToken},
             params: {
+                subject: subjectId,
                 page: pageIndex,
                 pageSize: pageSize
             }
@@ -85,6 +101,18 @@ app.service('RestService', ['$http', function ($http) {
             params: {
                 identifier: identifier,
                 vote: vote
+            }
+        };
+        return http(req);
+    };
+
+    this.batchVote = function (authToken, items) {
+        var req = {
+            method: 'GET',
+            url: baseURl + '/services/rs/v1/experts/vote/batch',
+            headers: {"x-auth-token": authToken},
+            params: {
+                body: items
             }
         };
         return http(req);

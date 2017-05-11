@@ -4,20 +4,22 @@
     <meta charset="UTF-8">
     <title></title>
 
-    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="node_modules/bootstrap-rtl/dist/css/bootstrap-rtl.min.css">
-    <link rel="stylesheet" href="node_modules/angular-ui-bootstrap/dist/ui-bootstrap-csp.css">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no"/>
+    <link rel="stylesheet" href="node_modules/angular-material/angular-material.css">
+
+    <link rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.css">
 
     <script type="text/javascript" src="node_modules/jquery/dist/jquery.js"></script>
-    <script type="text/javascript" src="node_modules/bootstrap/dist/js/bootstrap.js"></script>
+
     <script type="text/javascript" src="node_modules/angular/angular.min.js"></script>
+    <script type="text/javascript" src="node_modules/angular-aria/angular-aria.js"></script>
     <script type="text/javascript" src="node_modules/angular-route/angular-route.min.js"></script>
     <script type="text/javascript" src="node_modules/angular-sanitize/angular-sanitize.js"></script>
-
-    <script type="text/javascript" src="node_modules/angular-paging/dist/paging.min.js"></script>
-
-    <script type="text/javascript" src="node_modules/angular-ui-bootstrap/dist/ui-bootstrap.js"></script>
-    <script type="text/javascript" src="node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script>
+    <script type="text/javascript" src="node_modules/angular-animate/angular-animate.js"></script>
+    <script type="text/javascript" src="node_modules/angular-material/angular-material.js"></script>
+    <script type="text/javascript" src="node_modules/angular-messages/angular-messages.js"></script>
+    <script type="text/javascript" src="node_modules/angular-cookies/angular-cookies.js"></script>
+    <script type="text/javascript" src="node_modules/angular-material-icons/angular-material-icons.min.js"></script>
 
     <link rel="stylesheet" href="styles/main.css">
 
@@ -28,115 +30,56 @@
 </head>
 <body ng-app="expertApp">
 
-<div ng-controller="MainController">
-    <div ng-show="authenticated" class="container">
-        <table cellpadding="10" cellspacing="10" style="width: 760px; margin:0 auto;">
-            <tr>
-                <td>
-                    <div paging
-                         page="data.pageNo"
-                         page-size="data.pageSize"
-                         total="data.totalSize"
-                         paging-action="reload(page-1)">
-                    </div>
-                </td>
-                <td>
-                    <form ng-submit="reload(data.searchPageNo-1)">
-                        <span>صفحه:</span>
-                        <input placeholder="page"
-                               ng-model="data.searchPageNo"
-                               style="width: 50px; border:solid 1px #ddd; height: 35px;">
-                    </form>
-                </td>
-                <td>
-                    <strong>تعداد کل : {{data.totalSize}}</strong>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-warning" ng-click="requestMore()">درخواست رابطه بیشتر</button>
-                </td>
-            </tr>
-        </table>
+<div ng-controller="MainController" ng-cloak dir="rtl">
+    <!--
+    <div ng-include data-src="'html/triples.html'"></div>
+    <div ng-include data-src="'html/subjects.html'"></div>
+    -->
 
-        <table class="table" ng-if="data">
-            <thead>
-            <tr>
-                <th>#</th>
-                <th class="center">subject</th>
-                <th class="center">predicate</th>
-                <th class="center">object</th>
-                <th>وضعیت</th>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat='a in data.data'>
-                <td>{{(data.page * data.pageSize + $index)+1}}</td>
-                <td class="ltr right">
-                    <a ng-href="{{a.triple.subject | triple}}">{{a.triple.subject|mapPrefix}}</a>
-                </td>
-                <td class="ltr right">
-                    <a ng-href="{{a.triple.predicate}}">{{a.triple.predicate|mapPrefix}}</a>
-                </td>
-                <td class="ltr right">
-                    <span ng-if="a.triple.object.type!='Resource'">{{a.triple.object.value}}</span>
-                    <a ng-if="a.triple.object.type=='Resource'">{{a.triple.object.value|mapPrefix}}</a>
-                </td>
-                <td>
-                    <span ng-if='!editing[$index]'>{{a.vote}}</span>
-                    <select ng-if='editing[$index]' ng-model="a.vote" ng-options="s for s in voteList">
-                        <option value="" selected="selected"></option>
-                    </select>
-                    <!--<input ng-if='editing[$index]' type="checkbox" ng-checked="a.approved" ng-model="a.approved">-->
-                </td>
-                <td>
-                    <button ng-show='!editing[$index]' class="btn btn-danger" ng-click="editing[$index]=true;">ویرایش
-                    </button>
-                    <button ng-show='editing[$index]' class="btn btn-success"
-                            ng-click="editing[$index]=false;save($index, a.identifier, a.vote)">تایید
-                    </button>
-                    <button ng-show='editing[$index]' class="btn" ng-click="editing[$index]=false;revert($index)">
-                        انصراف
-                    </button>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+    <div ng-show="authenticated" class="container">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <md-button class="md-icon-button" ng-click="toggle()"
+                           style="fill: #fff;" aria-label="منو">
+                    <ng-md-icon icon="menu"></ng-md-icon>
+                </md-button>
+                <h2>{{data.pageTitle}}</h2>
+                <span flex=""></span>
+            </div>
+        </md-toolbar>
+
+        <md-sidenav
+                class="md-sidenav-right"
+                md-component-id="sidebar"
+                md-is-open="false"
+                md-whiteframe="3">
+
+            <md-toolbar class="md-theme-indigo">
+                <h1 class="md-toolbar-tools">فهرست</h1>
+            </md-toolbar>
+            <md-content layout-padding>
+                <div ng-include data-src="'html/subjects.html'"></div>
+            </md-content>
+
+        </md-sidenav>
+
+        <md-content flex>
+
+            <div layout="column" layout-align="top center">
+                <div layout-fill ng-include data-src="'html/triples.html'"></div>
+            </div>
+
+            <div flex></div>
+
+        </md-content>
+
 
     </div>
 
     <div ng-if="!authenticated" class="block-screen"></div>
 
     <div ng-if="!authenticated" class="container">
-        <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2" style="margin-top: 100px;">
-            <div class="panel panel-info">
-                <div class="panel-heading">
-                    <div class="panel-title">ورود به سیستم خبرگان</div>
-                </div>
-                <div style="padding-top:30px" class="panel-body">
-                    <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
-                    <form class="form-horizontal" ng-submit="login(username, password)">
-                        <div style="margin-bottom: 25px" class="input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                            <input ng-model="username" ng-required="true" type="text" class="form-control"
-                                   placeholder="نام کاربری">
-                        </div>
-                        <div style="margin-bottom: 25px" class="input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                            <input ng-model="password" ng-required="true" type="password" class="form-control"
-                                   placeholder="کلمه عبور">
-                        </div>
-                        <div style="margin-top:10px" class="form-group">
-                            <div class="col-sm-12 controls">
-                                <input type="submit" class="btn btn-success" value="ورود">
-                            </div>
-                        </div>
-
-                    </form>
-
-                </div>
-            </div>
-        </div>
-
+        <div ng-include data-src="'html/login.html'"></div>
     </div>
 </div>
 

@@ -43,7 +43,6 @@
 }
 * {
   font-family: IRANSans-web, Sahel, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  font-size: 14px;
 }
 .ltr {
   direction: ltr;
@@ -56,6 +55,15 @@
 }
 .right {
   text-align: right;
+}
+thead tr {
+  background-color: #d9edf7;
+}
+.odd {
+  background-color: #f8f8f8;
+}
+.even {
+  background-color: #e8e8e8;
 }
 .center {
   text-align: center;
@@ -103,7 +111,7 @@ div.block-screen {
   right: 0;
   top: 0;
   bottom: 0;
-  background-color: #aaa;
+  background-color: white;
   opacity: 0.7;
 }
 .btn {
@@ -128,4 +136,15 @@ div.block-screen {
   border: solid 1px #ddad4e;
   box-shadow: 0 0 4px 0px #ddd;
   margin: 0 auto;
+}
+/**/
+.login-form md-card {
+  padding: 0 !important;
+  box-shadow: 0 0 20px 2px #aaa;
+}
+.login-form md-card md-card-title {
+  background-color: blue;
+}
+md-icon svg {
+  fill: inherit;
 }

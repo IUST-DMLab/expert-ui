@@ -1,0 +1,94 @@
+<div ng-if="data.subjects.selected">
+    <div ng-if="false">
+        <table cellpadding="" cellspacing="0" style="width: 760px; margin:0 auto;">
+            <tr>
+                <td>
+                    <div paging
+                         page="data.pageNo"
+                         page-size="data.pageSize"
+                         total="data.totalSize"
+                         paging-action="reload(page-1)">
+                    </div>
+                </td>
+                <td>
+                    <form ng-submit="reload(data.searchPageNo-1)">
+                        <span>صفحه:</span>
+                        <input placeholder="page"
+                               ng-model="data.searchPageNo"
+                               style="width: 50px; border:solid 1px #ddd; height: 35px;">
+                    </form>
+                </td>
+                <td>
+                    <strong>تعداد کل : {{data.totalSize}}</strong>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-warning" ng-click="requestMore()">درخواست رابطه بیشتر</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div>
+        <table class="table" cellpadding="10" cellspacing="0" style="width: 100%;" ng-if="data">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th class="right">خصیصه</th>
+                <th class="right">مقدار</th>
+                <th class="right" style="min-width: 220px;width: 220px;">وضعیت</th>
+                <th style="min-width: 240px;width: 240px;"></th>
+            </tr>
+            </thead>
+            <tfoot>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>
+                    <md-button class="md-raised md-primary" ng-click="checkAll('Approve')">تایید همه</md-button>
+                    <md-button class="md-raised md-warn" ng-click="checkAll('Reject')">رد همه</md-button>
+                </td>
+                <td>
+                    <md-button class="md-raised" ng-click="submitAll()">ارسال همه</md-button>
+                    <md-button ng-if="isVipUser" class="md-raised" md-colors="{color: 'green'}" ng-click="submitAll('VIP')">ارسال ویژه همه
+                    </md-button>
+                </td>
+            </tr>
+            </tfoot>
+            <tbody>
+            <tr ng-repeat='item in data.triples.list' ng-class-even="'even'" ng-class-odd="'odd'">
+                <td>{{($index)+1}}</td>
+                <td class="ltr right" style="white-space: nowrap;">
+                    <a ng-href="{{item.triple.predicate}}">{{item.triple.predicate | mapPrefix}}</a>
+                </td>
+                <td class="ltr right" style="white-space: nowrap;">
+                    <span ng-if="item.triple.object.type!='Resource'">{{item.triple.object.value}}</span>
+                    <a ng-if="item.triple.object.type=='Resource'">{{item.triple.object.value|mapPrefix}}</a>
+                </td>
+                <td>
+                    <md-radio-group ng-model="item.vote" layout="row">
+                        <md-radio-button value="Approve" class="md-primary">تایید</md-radio-button>
+                        <md-radio-button value="Reject" class="md-warn">رد</md-radio-button>
+                    </md-radio-group>
+                </td>
+                <td>
+                    <md-button class="md-raised" ng-click="submit()">ارسال</md-button>
+                    <md-button ng-if="isVipUser" class="md-raised" md-colors="{color: 'green'}" ng-click="submit('VIP')">ارسال ویژه
+                    </md-button>
+
+                    <!--                    <button ng-show='!editing[$index]' class="btn btn-danger" ng-click="editing[$index]=true;">ویرایش
+                                        </button>
+                                        <button ng-show='editing[$index]' class="btn btn-success"
+                                                ng-click="editing[$index]=false;save($index, item.identifier, item.vote)">تایید
+                                        </button>
+                                        <button ng-show='editing[$index]' class="btn btn-success"
+                                                ng-click="editing[$index]=false;save($index, item.identifier, item.vote)">تایید ویژه
+                                        </button>
+                                        <button ng-show='editing[$index]' class="btn" ng-click="editing[$index]=false;revert($index)">
+                                            انصراف
+                                        </button>-->
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
