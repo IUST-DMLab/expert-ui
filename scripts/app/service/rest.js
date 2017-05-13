@@ -102,14 +102,26 @@ app.service('RestService', ['$http', function ($http) {
         return post(url, params, headers);
     };
 
-    this.requestMore = function (authToken, count) {
-        var url = baseURl + '/services/rs/v1/experts/triples/new';
+    this.requestMore = function (authToken, sourceModule, subject) {
+        var url = baseURl + '/services/rs/v1/experts/triples/new/subject';
         var headers = {"x-auth-token": authToken};
         var params = {
-            count: count
+            sourceModule: sourceModule,
+            subject: subject
         };
 
         return get(url, params, headers);
+    };
+
+    this.getLabel = function (subject) {
+
+        var url = 'http://194.225.227.161:8091/rs/v1/triples/search';
+        var params = {
+            predicate : 'http://www.w3.org/2000/01/rdf-schema#label',
+            subject: subject
+        };
+
+        return get(url, params);
     };
 }]);
 

@@ -35,6 +35,7 @@
                 <th class="right">خصیصه</th>
                 <th class="right">مقدار</th>
                 <th class="right" style="min-width: 220px;width: 220px;">وضعیت</th>
+                <th class="right" style="min-width: 220px;width: 220px;">ماژول</th>
                 <th style="min-width: 240px;width: 240px;"></th>
             </tr>
             </thead>
@@ -47,6 +48,7 @@
                     <md-button class="md-raised md-primary" ng-click="checkAll('Approve')">تایید همه</md-button>
                     <md-button class="md-raised md-warn" ng-click="checkAll('Reject')">رد همه</md-button>
                 </td>
+                <td></td>
                 <td>
                     <md-button class="md-raised" ng-click="submitAll()">ارسال همه</md-button>
                     <md-button ng-if="isVipUser" class="md-raised" md-colors="{color: 'green'}"
@@ -59,7 +61,7 @@
             <tr ng-repeat='item in data.triples.list' ng-class-even="'even'" ng-class-odd="'odd'">
                 <td>{{($index)+1}}</td>
                 <td class="ltr right" style="white-space: nowrap;">
-                    <a ng-href="{{item.triple.predicate}}">{{item.triple.predicate | mapPrefix}}</a>
+                    <a ng-href="http://194.225.227.161/mapping/html/triple.html?subject={{item.triple.predicate}}">{{item.triple.predicate | mapPrefix}}</a>
                 </td>
                 <td class="ltr right" style="white-space: nowrap;">
                     <span ng-if="item.triple.object.type!='Resource'">{{item.triple.object.value}}</span>
@@ -70,6 +72,9 @@
                         <md-radio-button value="Approve" class="md-primary">تایید</md-radio-button>
                         <md-radio-button value="Reject" class="md-warn">رد</md-radio-button>
                     </md-radio-group>
+                </td>
+                <td>
+                    <a target="_blank" ng-href="{{item.triple.sources[0].urls[0]}}">{{item.triple.sources[0].module}}</a>
                 </td>
                 <td>
                     <md-button class="md-raised" ng-click="submit(item)">ارسال</md-button>

@@ -13,6 +13,8 @@ app
         }
 
         $scope.data = {subjects: {}, triples: {}};
+        $scope.search = {};
+        $scope.modules = ['wiki', 'web_table_extractor', 'wiki_table_extractor', 'text'];
 
         $scope.login = function (username, password) {
             $scope.authToken = '';
@@ -44,7 +46,25 @@ app
         $scope.reload = function () {
             RestService.getSubjects($scope.authToken)
                 .then(function (response) {
+
+                    //var list = response.data.data;
+
+                    for (let item of response.data.data) {
+                        RestService.getLabel(item.id)
+                        .then(function(d){
+                                //let caption = d.data.data.length ?
+                                //console.log(d.data.data[0].object.value);
+
+                                var titleRow = d.data.data.filter(function (item) {
+                                    return item.predicate.endsWith('label');
+                                })[0];
+
+                                item.caption = titleRow ? titleRow.object.value :'--- تعیین نشده ---';
+                            });
+                    }
+
                     $scope.data.subjects.list = response.data.data;
+
                     if ($scope.data.subjects.list && $scope.data.subjects.list.length) {
                         $scope.loadTriples($scope.data.subjects.list[0]);
                     }
@@ -97,10 +117,13 @@ app
         };
 
         $scope.requestMore = function () {
-            if (confirm('آیا می‌خواهید تعداد بیشتری رابطه به شما تخصیص داده شود؟'))
-                RestService.requestMore($scope.authToken, 50)
+
+            var m = $scope.search.module;
+            var t = $scope.search.text;
+
+            if (m && t)
+                RestService.requestMore($scope.authToken, m, t)
                     .then(function (data) {
-                        //$scope.data.data[index].vote = data.vote;
                         $scope.reload();
                     });
         };

@@ -1,37 +1,30 @@
-<div>
-    <div ng-hide="true">
-        <table cellpadding="10" cellspacing="10" style="width: 760px; margin:0 auto;">
-            <tr>
-                <td>
-                    <div paging
-                         page="data.pageNo"
-                         page-size="data.pageSize"
-                         total="data.totalSize"
-                         paging-action="reload(page-1)">
-                    </div>
-                </td>
-                <td>
-                    <form ng-submit="reload(data.searchPageNo-1)">
-                        <span>صفحه:</span>
-                        <input placeholder="page"
-                               ng-model="data.searchPageNo"
-                               style="width: 50px; border:solid 1px #ddd; height: 35px;">
-                    </form>
-                </td>
-                <td>
-                    <strong>تعداد کل : {{data.totalSize}}</strong>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-warning" ng-click="requestMore()">درخواست رابطه بیشتر</button>
-                </td>
-            </tr>
-        </table>
-    </div>
+<div layout="column">
+    <form ng-submit="requestMore();">
+        <div layout="row" class="layout-row">
+            <md-input-container>
+                <label>موجودیت</label>
+                <input ng-model="search.text">
+            </md-input-container>
+
+            <md-input-container>
+                <label>ماژول</label>
+                <md-select ng-model="search.module">
+                    <md-option ng-repeat="m in modules" ng-value="m">
+                        {{m}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+
+            <md-input-container>
+                <md-button class="md-raised md-primary" ng-click="requestMore();">تخصیص</md-button>
+            </md-input-container>
+        </div>
+    </form>
     <div ng-if="data">
         <md-list-item class="md-1-line" ng-repeat="subject in data.subjects.list" ng-click="loadTriples(subject)">
             <div class="md-list-item-text" layout="column">
                 <div class="ltr right" style="white-space: nowrap">
-                    <span>{{subject.id | mapPrefix}}</span>
+                    <span>{{subject.caption}}</span>
                 </div>
             </div>
         </md-list-item>
