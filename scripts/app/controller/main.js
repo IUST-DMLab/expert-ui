@@ -121,7 +121,7 @@ app
             var m = $scope.search.module;
             var t = $scope.search.text;
 
-            if (m && t)
+            if (m || t)
                 RestService.requestMore($scope.authToken, m, t)
                     .then(function (data) {
                         $scope.reload();
