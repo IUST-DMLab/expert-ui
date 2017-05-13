@@ -27,7 +27,7 @@
             </tr>
         </table>
     </div>
-    <div>
+    <div ng-if="data.triples.list">
         <table class="table" cellpadding="10" cellspacing="0" style="width: 100%;" ng-if="data">
             <thead>
             <tr>
@@ -49,7 +49,8 @@
                 </td>
                 <td>
                     <md-button class="md-raised" ng-click="submitAll()">ارسال همه</md-button>
-                    <md-button ng-if="isVipUser" class="md-raised" md-colors="{color: 'green'}" ng-click="submitAll('VIP')">ارسال ویژه همه
+                    <md-button ng-if="isVipUser" class="md-raised" md-colors="{color: 'green'}"
+                               ng-click="submitAll('VIP')">ارسال ویژه همه
                     </md-button>
                 </td>
             </tr>
@@ -71,10 +72,10 @@
                     </md-radio-group>
                 </td>
                 <td>
-                    <md-button class="md-raised" ng-click="submit()">ارسال</md-button>
-                    <md-button ng-if="isVipUser" class="md-raised" md-colors="{color: 'green'}" ng-click="submit('VIP')">ارسال ویژه
+                    <md-button class="md-raised" ng-click="submit(item)">ارسال</md-button>
+                    <md-button ng-if="isVipUser" class="md-raised" md-colors="{color: 'green'}"
+                               ng-click="submit(item, 'VIP')">ارسال ویژه
                     </md-button>
-
                     <!--                    <button ng-show='!editing[$index]' class="btn btn-danger" ng-click="editing[$index]=true;">ویرایش
                                         </button>
                                         <button ng-show='editing[$index]' class="btn btn-success"

@@ -1,5 +1,6 @@
 app.service('RestService', ['$http', function ($http) {
     var baseURl = 'http://194.225.227.161:8092';
+
     var self = this;
     this.ingoing = 0;
 
@@ -7,129 +8,118 @@ app.service('RestService', ['$http', function ($http) {
         baseURl = rootAddress;
     };
 
-    function handelError(error) {
+    function onerror(response) {
+        loading.hide();
         self.ingoing--;
-        console.log(error);
+        console.log('error : ', response);
+        return response;
     }
 
-    function handelSuccess(/*data, status, headers, config*/) {
+    function onsuccess(response) {
+        loading.hide();
         self.ingoing--;
+        return response;
     }
 
-    function http(req) {
-        if (OUC.isEmpty(req.params)) req.params = {};
-        req.params.random = new Date().getTime();
+    function get(url, params, headers) {
+        params = params || {};
+        params.random = new Date().getTime();
+
+        var req = {
+            method: 'GET',
+            url: url,
+            headers: headers,
+            params: params
+        };
+
         self.ingoing++;
-
-        $('#loading').remove();
-        $('body').append('<div id="loading" class="loading"><span>loading...</span></div>');
-
-        $('#loading').fadeIn();
-        return $http(req)
-            .then(SUCCESS, ERROR);
-
-        function ERROR(response) {
-            $('#loading').fadeOut();
-            handelError(response);
-            return response;
-        }
-
-        function SUCCESS(response) {
-            $('#loading').fadeOut();
-            handelSuccess(response);
-            return response;
-        }
+        loading.show();
+        return $http(req).then(onsuccess, onerror);
     }
 
-    function post(url, data) {
+    function post(url, data, headers) {
+        var req = {
+            method: 'POST',
+            url: url,
+            headers: headers,
+            data: data
+        };
+
         self.ingoing++;
-        return $http.post(url, data).then(handelSuccess, handelError);
+        loading.show();
+
+        return $http(req).then(onsuccess, onerror);
+        //return $http.post(url, data, headers).then(onsuccess, onerror);
     }
 
     /**/
 
     this.getPrefixes = function () {
-        var req = {
-            method: 'GET',
-            url: 'http://194.225.227.161:8090/mapping/rest/v1/prefixes'
-        };
-
-        return http(req);
+        return get('http://194.225.227.161:8090/mapping/rest/v1/prefixes');
     };
 
     this.login = function (username, password) {
-        var req = {
-            method: 'GET',
-            url: baseURl + '/services/rs/v1/experts/login',
-            headers: {'Authorization': 'Basic ' + btoa(username + ':' + password)}
-        };
-
-        return http(req);
+        var url = baseURl + '/services/rs/v1/experts/login';
+        var headers = {'Authorization': 'Basic ' + btoa(username + ':' + password)};
+        return get(url, {}, headers);
     };
 
     this.getSubjects = function (authToken) {
-        var req = {
-            method: 'GET',
-            url: baseURl + '/services/rs/v1/experts/subjects/current',
-            headers: {"x-auth-token": authToken}
-        };
+        var url = baseURl + '/services/rs/v1/experts/subjects/current';
+        var headers = {"x-auth-token": authToken};
 
-        return http(req);
+        return get(url, {}, headers);
     };
 
     this.getTriples = function (authToken, subjectId, pageIndex, pageSize) {
-        var req = {
-            method: 'GET',
-            url: baseURl + '/services/rs/v1/experts/triples/current',
-            headers: {"x-auth-token": authToken},
-            params: {
-                subject: subjectId,
-                page: pageIndex,
-                pageSize: pageSize
-            }
+
+        var url = baseURl + '/services/rs/v1/experts/triples/current';
+        var headers = {"x-auth-token": authToken};
+        var params = {
+            subject: subjectId,
+            page: pageIndex,
+            pageSize: pageSize
         };
-        return http(req);
+
+        return get(url, params, headers);
     };
 
     this.vote = function (authToken, identifier, vote) {
-        var req = {
-            method: 'GET',
-            url: baseURl + '/services/rs/v1/experts/vote',
-            headers: {
-                "x-auth-token": authToken
-            },
-            params: {
-                identifier: identifier,
-                vote: vote
-            }
+        var url = baseURl + '/services/rs/v1/experts/vote';
+        var headers = {"x-auth-token": authToken};
+        var params = {
+            identifier: identifier,
+            vote: vote
         };
-        return http(req);
+
+        return get(url, params, headers);
     };
 
     this.batchVote = function (authToken, items) {
-        var req = {
-            method: 'GET',
-            url: baseURl + '/services/rs/v1/experts/vote/batch',
-            headers: {"x-auth-token": authToken},
-            params: {
-                body: items
-            }
-        };
-        return http(req);
+        let url = baseURl + '/services/rs/v1/experts/vote/batch';
+        let params = items;
+        let headers = {"x-auth-token": authToken};
+        return post(url, params, headers);
     };
 
     this.requestMore = function (authToken, count) {
-        var req = {
-            method: 'GET',
-            url: baseURl + '/services/rs/v1/experts/triples/new',
-            headers: {
-                "x-auth-token": authToken
-            },
-            params: {
-                count: count
-            }
+        var url = baseURl + '/services/rs/v1/experts/triples/new';
+        var headers = {"x-auth-token": authToken};
+        var params = {
+            count: count
         };
-        return http(req);
-    };
 
+        return get(url, params, headers);
+    };
 }]);
+
+var loading = {
+    show: function () {
+        $('#loading').remove();
+        $('body').append('<div id="loading" class="loading"><span>در حال تبادل اطلاعات ...</span></div>');
+        $('#loading').fadeIn();
+    },
+    hide: function () {
+        $('#loading').fadeOut();
+    }
+};

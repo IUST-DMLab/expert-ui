@@ -1,8 +1,8 @@
 app
     .controller('MainController', function ($scope, $http, RestService, $cookieStore, $mdSidenav) {
 
-        //var at = $cookieStore.get('authToken');
-        var at = undefined;
+        var at = $cookieStore.get('authToken');
+        //var at = undefined;
         $scope.roles = $cookieStore.get('roles');
         if (at) {
             $scope.authenticated = true;
@@ -12,9 +12,6 @@ app
             $scope.authenticated = false;
         }
 
-        $scope.username = '';
-        $scope.password = '';
-        //$scope.voteList = ['None', 'Reject', 'Approve', 'VIPReject', 'VIPApprove'];
         $scope.data = {subjects: {}, triples: {}};
 
         $scope.login = function (username, password) {
@@ -30,10 +27,10 @@ app
                     $cookieStore.put('roles', response.data);
                     $scope.roles = response.data;
                     $scope.authenticated = true;
-                    $scope.isVipUser = (response.data[0] === "ROLE_VIPEXPERT");
+                    $scope.isVipUser = (response.data.indexOf("ROLE_VIPEXPERT") !== -1);
                     $scope.error = undefined;
 
-                    $scope.reload(0);
+                    $scope.reload();
                 }
             }
 
@@ -44,10 +41,9 @@ app
             }
         };
 
-        $scope.reload = function (page) {
+        $scope.reload = function () {
             RestService.getSubjects($scope.authToken)
                 .then(function (response) {
-                    //$scope.copy = angular.copy(data);
                     $scope.data.subjects.list = response.data.data;
                     if ($scope.data.subjects.list && $scope.data.subjects.list.length) {
                         $scope.loadTriples($scope.data.subjects.list[0]);
@@ -55,8 +51,6 @@ app
                     else {
 
                     }
-                    //$scope.data.pageNo = $scope.data.page + 1;
-                    //$scope.data.searchPageNo = $scope.data.pageNo;
                 });
         };
 
@@ -74,17 +68,31 @@ app
                 });
         };
 
-        $scope.submit = function (identifier, vote) {
-            RestService.vote($scope.authToken, identifier, vote)
+        $scope.submit = function (item, vip) {
+            var vote = item.vote || 'None';
+            if ($scope.isVipUser && vip && item.vote !== 'None')
+                vote = 'VIP' + item.vote;
+
+            RestService.vote($scope.authToken, item.identifier, vote)
                 .then(function (data) {
-                    $scope.reload($scope.data.pageNo);
+                    $scope.loadTriples($scope.data.subjects.selected);
                 });
         };
 
-        $scope.submitAll = function (items) {
-            RestService.batchVote($scope.authToken, identifier, vote)
+        $scope.submitAll = function (vip) {
+            let i = 0;
+            let items = {};
+            for (let item of $scope.data.triples.list) {
+                i++;
+                let vote = item.vote || 'None';
+                if ($scope.isVipUser && vip && item.vote !== 'None')
+                    vote = 'VIP' + item.vote;
+                items[item.identifier] = vote;
+            }
+
+            RestService.batchVote($scope.authToken, items)
                 .then(function (data) {
-                    $scope.reload($scope.data.pageNo);
+                    $scope.reload();
                 });
         };
 
@@ -93,13 +101,9 @@ app
                 RestService.requestMore($scope.authToken, 50)
                     .then(function (data) {
                         //$scope.data.data[index].vote = data.vote;
-                        $scope.reload(0);
+                        $scope.reload();
                     });
         };
-
-        //$scope.revert = function (index) {
-        //    $scope.data.data[index] = $scope.copy.data[index];
-        //};
 
         $scope.checkAll = function (vote) {
             if ($scope.data.triples.list && $scope.data.triples.list.length) {
@@ -107,11 +111,6 @@ app
                     item.vote = vote;
                 }
             }
-        };
-
-        $scope.applyAll = function (vip) {
-            var vote = vip ? 'VIP' : '';
-
         };
 
         $scope.toggle = function () {
