@@ -24,7 +24,7 @@ app.filter("mapPrefix", function (RestService) {
                     prefixes = result.data;
                 });
             }
-            return "-"; // PLACEHOLDER WHILE LOADING, COULD BE EMPTY
+            return ""; // PLACEHOLDER WHILE LOADING, COULD BE EMPTY
         }
         else
             return realFilter(value);

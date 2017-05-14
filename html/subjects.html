@@ -1,6 +1,6 @@
 <div layout="column">
     <form ng-submit="requestMore();">
-        <div layout="row" class="layout-row">
+        <div layout="row">
             <md-input-container>
                 <label>موجودیت</label>
                 <input ng-model="search.text">
@@ -9,6 +9,7 @@
             <md-input-container>
                 <label>ماژول</label>
                 <md-select ng-model="search.module">
+                    <md-option ng-value=""></md-option>
                     <md-option ng-repeat="m in modules" ng-value="m">
                         {{m}}
                     </md-option>
@@ -24,7 +25,7 @@
         <md-list-item class="md-1-line" ng-repeat="subject in data.subjects.list" ng-click="loadTriples(subject)">
             <div class="md-list-item-text" layout="column">
                 <div class="ltr right" style="white-space: nowrap">
-                    <span>{{subject.caption}}</span>
+                    <span>{{subject.caption | mapPrefix}}</span>
                 </div>
             </div>
         </md-list-item>

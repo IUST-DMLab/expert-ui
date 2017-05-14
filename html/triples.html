@@ -1,32 +1,4 @@
 <div ng-if="data.subjects.selected">
-    <div ng-if="false">
-        <table cellpadding="" cellspacing="0" style="width: 760px; margin:0 auto;">
-            <tr>
-                <td>
-                    <div paging
-                         page="data.pageNo"
-                         page-size="data.pageSize"
-                         total="data.totalSize"
-                         paging-action="reload(page-1)">
-                    </div>
-                </td>
-                <td>
-                    <form ng-submit="reload(data.searchPageNo-1)">
-                        <span>صفحه:</span>
-                        <input placeholder="page"
-                               ng-model="data.searchPageNo"
-                               style="width: 50px; border:solid 1px #ddd; height: 35px;">
-                    </form>
-                </td>
-                <td>
-                    <strong>تعداد کل : {{data.totalSize}}</strong>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-warning" ng-click="requestMore()">درخواست رابطه بیشتر</button>
-                </td>
-            </tr>
-        </table>
-    </div>
     <div ng-if="data.triples.list">
         <table class="table" cellpadding="10" cellspacing="0" style="width: 100%;" ng-if="data">
             <thead>
@@ -61,11 +33,11 @@
             <tr ng-repeat='item in data.triples.list' ng-class-even="'even'" ng-class-odd="'odd'">
                 <td>{{($index)+1}}</td>
                 <td class="ltr right" style="white-space: nowrap;">
-                    <a ng-href="http://194.225.227.161/mapping/html/triple.html?subject={{item.triple.predicate}}">{{item.triple.predicate | mapPrefix}}</a>
+                    <a ng-href="{{PREFIX}}{{item.triple.predicate}}">{{item.triple.predicate | mapPrefix}}</a>
                 </td>
                 <td class="ltr right" style="white-space: nowrap;">
                     <span ng-if="item.triple.object.type!='Resource'">{{item.triple.object.value}}</span>
-                    <a ng-if="item.triple.object.type=='Resource'">{{item.triple.object.value|mapPrefix}}</a>
+                    <a ng-href="{{PREFIX}}{{item.triple.object.value}}" ng-if="item.triple.object.type=='Resource'">{{item.triple.object.value|mapPrefix}}</a>
                 </td>
                 <td>
                     <md-radio-group ng-model="item.vote" layout="row">

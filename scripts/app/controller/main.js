@@ -1,8 +1,8 @@
 app
-    .controller('MainController', function ($scope, $http, RestService, $cookieStore, $mdSidenav) {
+    .controller('MainController', function ($scope, $http, RestService, $cookieStore, $mdSidenav, $filter) {
 
-        var at = $cookieStore.get('authToken');
-        //var at = undefined;
+        //var at = $cookieStore.get('authToken');
+        var at = undefined;
         $scope.roles = $cookieStore.get('roles');
         if (at) {
             $scope.authenticated = true;
@@ -15,6 +15,7 @@ app
         $scope.data = {subjects: {}, triples: {}};
         $scope.search = {};
         $scope.modules = ['wiki', 'web_table_extractor', 'wiki_table_extractor', 'text'];
+        $scope.PREFIX = 'http://194.225.227.161/mapping/html/triple.html?subject=';
 
         $scope.login = function (username, password) {
             $scope.authToken = '';
@@ -44,40 +45,39 @@ app
         };
 
         $scope.reload = function () {
-            RestService.getSubjects($scope.authToken)
-                .then(function (response) {
+            if ($scope.authenticated)
+                RestService.getSubjects($scope.authToken)
+                    .then(function (response) {
+                        if (!response.data.data.length) {
+                            $scope.requestMore();
+                            return;
+                        }
 
-                    //var list = response.data.data;
+                        for (let item of response.data.data) {
+                            RestService.getLabel(item.id)
+                                .then(function (d) {
+                                    var titleRow = d.data.data.filter(function (q) {
+                                        return q.predicate.endsWith('label');
+                                    })[0];
 
-                    for (let item of response.data.data) {
-                        RestService.getLabel(item.id)
-                        .then(function(d){
-                                //let caption = d.data.data.length ?
-                                //console.log(d.data.data[0].object.value);
+                                    item.caption = titleRow ? titleRow.object.value :  ($filter('mapPrefix')(item.id) || item.id);
+                                });
+                        }
 
-                                var titleRow = d.data.data.filter(function (item) {
-                                    return item.predicate.endsWith('label');
-                                })[0];
-
-                                item.caption = titleRow ? titleRow.object.value :'--- تعیین نشده ---';
-                            });
-                    }
-
-                    $scope.data.subjects.list = response.data.data;
-
-                    if ($scope.data.subjects.list && $scope.data.subjects.list.length) {
+                        $scope.data.subjects.list = response.data.data;
                         $scope.loadTriples($scope.data.subjects.list[0]);
-                    }
-                    else {
-
-                    }
-                });
+                    });
         };
 
         $scope.loadTriples = function (subject) {
             $scope.data.subjects.selected = subject;
             RestService.getTriples($scope.authToken, $scope.data.subjects.selected.id)
                 .then(function (response) {
+                    if (!response.data.data.length) {
+                        $scope.reload();
+                        return;
+                    }
+
                     $scope.data.triples.list = response.data.data;
 
                     var titleRow = $scope.data.triples.list.filter(function (item) {
