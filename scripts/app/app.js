@@ -5,7 +5,7 @@ app.filter("mapPrefix", function (RestService) {
         serviceInvoked = false;
 
     function realFilter(text) { // REAL FILTER LOGIC
-        //if(!text) return text;
+        if(!text) return text;
         for (var link in prefixes) {
             var p = prefixes[link];
             if (text.indexOf(link) !== -1)

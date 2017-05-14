@@ -60,6 +60,7 @@ app
                                         return q.predicate.endsWith('label');
                                     })[0];
 
+                                    //item.caption = ($filter('mapPrefix')(item.id) || item.id);
                                     item.caption = titleRow ? titleRow.object.value : ($filter('mapPrefix')(item.id) || item.id);
                                 });
                         }
@@ -84,7 +85,8 @@ app
                         return item.triple.predicate.endsWith('label');
                     })[0];
 
-                    $scope.data.pageTitle = titleRow ? titleRow.triple.object.value : '--- تعیین نشده ---';
+                    $scope.data.pageTitle = ($filter('mapPrefix')(subject.id) || subject.id);
+                    //$scope.data.pageTitle = titleRow ? titleRow.triple.object.value : '--- تعیین نشده ---';
                 });
         };
 
