@@ -7,7 +7,7 @@
                 <th class="right">خصیصه</th>
                 <th class="right">مقدار</th>
                 <th class="right" style="min-width: 220px;width: 220px;">وضعیت</th>
-                <th class="right" style="min-width: 220px;width: 220px;">ماژول</th>
+                <th class="right">ماژول</th>
                 <th style="min-width: 240px;width: 240px;"></th>
             </tr>
             </thead>
@@ -35,7 +35,7 @@
                 <td class="ltr right" style="">
                     <a ng-href="{{PREFIX}}{{item.triple.predicate}}">{{item.triple.predicate | mapPrefix}}</a>
                 </td>
-                <td class="ltr right" style="">
+                <td class="ltr right cell">
                     <span ng-if="item.triple.object.type!='Resource'">{{item.triple.object.value}}</span>
                     <a ng-href="{{PREFIX}}{{item.triple.object.value}}" ng-if="item.triple.object.type=='Resource'">{{item.triple.object.value|mapPrefix}}</a>
                 </td>

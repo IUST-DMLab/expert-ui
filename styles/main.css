@@ -139,6 +139,13 @@ div.block-screen {
   box-shadow: 0 0 4px 0px #ddd;
   margin: 0 auto;
 }
+.cell {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 300px;
+  display: block;
+}
 /**/
 .login-form md-card {
   padding: 0 !important;

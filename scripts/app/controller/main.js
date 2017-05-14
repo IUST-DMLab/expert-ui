@@ -1,5 +1,5 @@
 app
-    .controller('MainController', function ($scope, $http, RestService, $cookieStore, $mdSidenav, $filter) {
+    .controller('MainController', function ($scope, $http, RestService, $cookieStore, $mdSidenav, $filter, $mdDialog) {
 
         //var at = $cookieStore.get('authToken');
         var at = undefined;
@@ -85,8 +85,8 @@ app
                         return item.triple.predicate.endsWith('label');
                     })[0];
 
-                    $scope.data.pageTitle = ($filter('mapPrefix')(subject.id) || subject.id);
-                    //$scope.data.pageTitle = titleRow ? titleRow.triple.object.value : '--- تعیین نشده ---';
+                    //$scope.data.pageTitle = ($filter('mapPrefix')(subject.id) || subject.id);
+                    $scope.data.pageTitle = titleRow ? titleRow.triple.object.value : (($filter('mapPrefix')(subject.id) || subject.id));
                 });
         };
 
@@ -126,6 +126,9 @@ app
             RestService.requestMore($scope.authToken, m, t)
                 .then(function (data) {
                     $scope.reload();
+                })
+                .catch(function(error){
+                    alert('خطایی رخ داده است!');
                 });
         };
 
