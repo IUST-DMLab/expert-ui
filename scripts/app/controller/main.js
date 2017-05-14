@@ -60,7 +60,7 @@ app
                                         return q.predicate.endsWith('label');
                                     })[0];
 
-                                    item.caption = titleRow ? titleRow.object.value :  ($filter('mapPrefix')(item.id) || item.id);
+                                    item.caption = titleRow ? titleRow.object.value : ($filter('mapPrefix')(item.id) || item.id);
                                 });
                         }
 
@@ -121,11 +121,10 @@ app
             var m = $scope.search.module;
             var t = $scope.search.text;
 
-            if (m || t)
-                RestService.requestMore($scope.authToken, m, t)
-                    .then(function (data) {
-                        $scope.reload();
-                    });
+            RestService.requestMore($scope.authToken, m, t)
+                .then(function (data) {
+                    $scope.reload();
+                });
         };
 
         $scope.checkAll = function (vote) {
