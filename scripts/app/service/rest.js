@@ -11,13 +11,14 @@ app.service('RestService', ['$http', function ($http) {
     function onerror(response) {
         loading.hide();
         self.ingoing--;
-        console.log('error : ', response);
+        console.log('onerror : ', response);
         return response;
     }
 
     function onsuccess(response) {
         loading.hide();
         self.ingoing--;
+        // console.log('onsuccess : ', response);
         return response;
     }
 
@@ -103,9 +104,9 @@ app.service('RestService', ['$http', function ($http) {
     };
 
     this.requestMore = function (authToken, sourceModule, subject) {
-        var url = baseURl + '/services/rs/v1/experts/triples/new/subject';
-        var headers = {"x-auth-token": authToken};
-        var params = {
+        let url = baseURl + '/services/rs/v1/experts/triples/new/subject';
+        let headers = {"x-auth-token": authToken};
+        let params = {
             sourceModule: sourceModule,
             subject: subject
         };

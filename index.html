@@ -31,11 +31,6 @@
 <body ng-app="expertApp">
 
 <div ng-controller="MainController" ng-cloak dir="rtl">
-    <!--
-    <div ng-include data-src="'html/triples.html'"></div>
-    <div ng-include data-src="'html/subjects.html'"></div>
-    -->
-
     <div ng-show="authenticated" class="container">
         <md-toolbar>
             <div class="md-toolbar-tools">
@@ -45,6 +40,18 @@
                 </md-button>
                 <h2>{{data.pageTitle}}</h2>
                 <span flex=""></span>
+                <span class="fa fa-lg fa-user"></span>
+
+                <md-menu>
+                    <md-button aria-label="user menu" class="" ng-click="openUserMenu($mdMenu, $event)">{{username}}
+                    </md-button>
+                    <md-menu-content width="4">
+                        <md-menu-item>
+                            <md-button ng-click="logout($event)">خروج</md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+
             </div>
         </md-toolbar>
 
@@ -71,7 +78,6 @@
             <div flex></div>
 
         </md-content>
-
 
     </div>
 

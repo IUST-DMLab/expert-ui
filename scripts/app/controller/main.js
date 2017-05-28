@@ -1,9 +1,8 @@
 app
     .controller('MainController', function ($scope, $http, RestService, $cookieStore, $mdSidenav, $filter, $mdDialog) {
 
-        //var at = $cookieStore.get('authToken');
-        var at = undefined;
-        $scope.roles = $cookieStore.get('roles');
+        // var at = undefined;
+        var at = $cookieStore.get('authToken');
         if (at) {
             $scope.authenticated = true;
             $scope.authToken = at;
@@ -20,6 +19,7 @@ app
         $scope.login = function (username, password) {
             $scope.authToken = '';
             $scope.roles = [];
+            $scope.username = '';
 
             RestService.login(username, password).then(SUCCESS, ERROR);
 
@@ -28,6 +28,7 @@ app
                 if ($scope.authToken) {
                     $cookieStore.put('authToken', $scope.authToken);
                     $cookieStore.put('roles', response.data);
+                    $cookieStore.put('username', username);
                     $scope.roles = response.data;
                     $scope.authenticated = true;
                     $scope.isVipUser = (response.data.indexOf("ROLE_VIPEXPERT") !== -1);
@@ -44,7 +45,23 @@ app
             }
         };
 
+        $scope.logout = function () {
+            $cookieStore.put('authToken', '');
+            $cookieStore.put('roles', '');
+            $cookieStore.put('username', '');
+            $scope.authToken = undefined;
+            $scope.authenticated = false;
+            $scope.roles = [];
+            $scope.isVipUser = undefined;
+
+
+        };
+
         $scope.reload = function () {
+            $scope.roles = $cookieStore.get('roles');
+            $scope.username = $cookieStore.get('username');
+
+            $('html,body').animate({scrollTop: 0}, 400);
             if ($scope.authenticated)
                 RestService.getSubjects($scope.authToken)
                     .then(function (response) {
@@ -85,7 +102,6 @@ app
                         return item.triple.predicate.endsWith('label');
                     })[0];
 
-                    //$scope.data.pageTitle = ($filter('mapPrefix')(subject.id) || subject.id);
                     $scope.data.pageTitle = titleRow ? titleRow.triple.object.value : (($filter('mapPrefix')(subject.id) || subject.id));
                 });
         };
@@ -127,7 +143,7 @@ app
                 .then(function (data) {
                     $scope.reload();
                 })
-                .catch(function(error){
+                .catch(function (error) {
                     alert('خطایی رخ داده است!');
                 });
         };
@@ -144,5 +160,12 @@ app
             $mdSidenav('sidebar').toggle();
         };
 
+        var originatorEv;
+        $scope.openUserMenu = function ($mdMenu, ev) {
+            originatorEv = ev;
+            $mdMenu.open(ev);
+        };
+
+        //*****
         $scope.reload();
     });

@@ -26,7 +26,9 @@
                             <div ng-message="required" class="my-message">لطفا کلمه عبور را وار نمایید</div>
                         </div>
                     </md-input-container>
-                    <md-button ng-disabled="!Form.$valid" ng-click="login(username, password)"
+                    <md-button type="submit"
+                               ng-disabled="!Form.$valid"
+                               ng-click="login(username, password)"
                                class="md-raised md-primary">ورود
                     </md-button>
                 </form>

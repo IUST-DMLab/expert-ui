@@ -6,7 +6,17 @@
                 <th>#</th>
                 <th class="right">خصیصه</th>
                 <th class="right">مقدار</th>
-                <th class="right" style="min-width: 220px;width: 220px;">وضعیت</th>
+                <th class="right" style="min-width: 220px;width: 220px;">
+                    <md-button class="md-icon-button md-primary" ng-click="checkAll('Approve')">تایید
+                        <!--<span class="fa fa-lg fa-check"></span>-->
+                    </md-button>
+                    <md-button class="md-icon-button  md-warn" ng-click="checkAll('Reject')">رد
+                        <!--<span class="fa fa-lg fa-close"></span>-->
+                    </md-button>
+                    <md-button class="md-icon-button md-primary" ng-click="checkAll('')" aria-label="no state">
+                        <span class="fa fa-lg fa-remove"></span>
+                    </md-button>
+                </th>
                 <th class="right">ماژول</th>
                 <th style="min-width: 240px;width: 240px;"></th>
             </tr>
@@ -40,30 +50,28 @@
                     <a ng-href="{{PREFIX}}{{item.triple.object.value}}" ng-if="item.triple.object.type=='Resource'">{{item.triple.object.value|mapPrefix}}</a>
                 </td>
                 <td>
-                    <md-radio-group ng-model="item.vote" layout="row">
-                        <md-radio-button value="Approve" class="md-primary">تایید</md-radio-button>
-                        <md-radio-button value="Reject" class="md-warn">رد</md-radio-button>
-                    </md-radio-group>
+                    <div layout="row">
+                        <md-radio-group ng-model="item.vote" layout="row">
+                            <md-radio-button value="Approve" class="md-primary">تایید</md-radio-button>
+                            <md-radio-button value="Reject" class="md-warn">رد</md-radio-button>
+                        </md-radio-group>
+                        <md-button class="md-icon-button md-primary"
+                                   ng-click="item.vote=''"
+                                   ng-if="item.vote"
+                                   aria-label="no state">
+                            <span class="fa fa-lg fa-remove"></span>
+                        </md-button>
+                    </div>
                 </td>
                 <td>
-                    <a target="_blank" ng-href="{{item.triple.sources[0].urls[0]}}">{{item.triple.sources[0].module}}</a>
+                    <a target="_blank"
+                       ng-href="{{item.triple.sources[0].urls[0]}}">{{item.triple.sources[0].module}}</a>
                 </td>
                 <td>
                     <md-button class="md-raised" ng-click="submit(item)">ارسال</md-button>
                     <md-button ng-if="isVipUser" class="md-raised" md-colors="{color: 'green'}"
                                ng-click="submit(item, 'VIP')">ارسال ویژه
                     </md-button>
-                    <!--                    <button ng-show='!editing[$index]' class="btn btn-danger" ng-click="editing[$index]=true;">ویرایش
-                                        </button>
-                                        <button ng-show='editing[$index]' class="btn btn-success"
-                                                ng-click="editing[$index]=false;save($index, item.identifier, item.vote)">تایید
-                                        </button>
-                                        <button ng-show='editing[$index]' class="btn btn-success"
-                                                ng-click="editing[$index]=false;save($index, item.identifier, item.vote)">تایید ویژه
-                                        </button>
-                                        <button ng-show='editing[$index]' class="btn" ng-click="editing[$index]=false;revert($index)">
-                                            انصراف
-                                        </button>-->
                 </td>
             </tr>
             </tbody>
