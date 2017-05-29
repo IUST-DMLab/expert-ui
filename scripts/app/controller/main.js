@@ -167,10 +167,10 @@ app
 
         $scope.requestMore = function () {
 
-            var subject = $scope.search.text;
-            var exact = $scope.search.exact ? true : false;
-            var source = $scope.search.module;
-            var size = $scope.search.size;
+           let subject = $scope.search.text || '';
+           let exact = $scope.search.exact ? true : false;
+           let source = $scope.search.module;
+           let size = $scope.search.size;
 
             if(!exact) subject = subject.replace(/\s/g, '_');
 
