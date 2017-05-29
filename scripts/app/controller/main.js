@@ -164,6 +164,8 @@ app
             var source = $scope.search.module;
             var size = $scope.search.size;
 
+            if(!exact) subject = subject.replace(/\s/g, '_');
+
             RestService.requestMore($scope.authToken, source, subject, exact, size)
                 .then(function (data) {
                     $scope.reload();
