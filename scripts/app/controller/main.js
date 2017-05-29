@@ -65,6 +65,11 @@ app
             if ($scope.authenticated)
                 RestService.getSubjects($scope.authToken)
                     .then(function (response) {
+                        if (typeof response.data === 'string' && response.data.indexOf('action="/login"') !== -1) {
+                            $scope.logout();
+                            $scope.reload();
+                        }
+
                         if (!response.data.data.length) {
                             $scope.requestMore();
                             return;
@@ -136,10 +141,12 @@ app
 
         $scope.requestMore = function () {
 
-            var m = $scope.search.module;
-            var t = $scope.search.text;
+            var subject = $scope.search.text;
+            var exact = $scope.search.exact ? true : false;
+            var source = $scope.search.module;
+            var size = $scope.search.size;
 
-            RestService.requestMore($scope.authToken, m, t)
+            RestService.requestMore($scope.authToken, source, subject, exact, size)
                 .then(function (data) {
                     $scope.reload();
                 })

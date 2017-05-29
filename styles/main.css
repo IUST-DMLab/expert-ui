@@ -43,6 +43,7 @@
 }
 * {
   font-family: IRANSans-web, Sahel, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 10pt;
 }
 .ltr {
   direction: ltr;

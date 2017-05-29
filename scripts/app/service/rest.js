@@ -103,12 +103,13 @@ app.service('RestService', ['$http', function ($http) {
         return post(url, params, headers);
     };
 
-    this.requestMore = function (authToken, sourceModule, subject) {
+    this.requestMore = function (authToken, sourceModule, subject, exact, size) {
         let url = baseURl + '/services/rs/v1/experts/triples/new/subject';
         let headers = {"x-auth-token": authToken};
         let params = {
             sourceModule: sourceModule,
-            subject: subject
+            subjectQuery: !exact ? subject : undefined,
+            subjectMatch: exact ? subject : undefined
         };
 
         return get(url, params, headers);
@@ -118,7 +119,7 @@ app.service('RestService', ['$http', function ($http) {
 
         var url = 'http://194.225.227.161:8091/rs/v1/triples/search';
         var params = {
-            predicate : 'http://www.w3.org/2000/01/rdf-schema#label',
+            predicate: 'http://www.w3.org/2000/01/rdf-schema#label',
             subject: subject
         };
 
