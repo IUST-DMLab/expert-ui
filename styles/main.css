@@ -41,7 +41,8 @@
 .fontIRANSans-web {
   font-family: IRANSans-web !important;
 }
-* {
+*,
+input {
   font-family: IRANSans-web, Sahel, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-size: 10pt;
 }
@@ -164,4 +165,7 @@ md-sidenav.md-closed.md-locked-open-add-active {
   min-width: 500px !important;
   width: 500px !important;
   max-width: 500px !important;
+}
+md-dialog .md-dialog-content {
+  direction: rtl;
 }

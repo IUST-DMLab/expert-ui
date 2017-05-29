@@ -102,14 +102,14 @@ app.service('RestService', ['$http', function ($http) {
         return post(url, params, headers);
     };
 
-    this.requestMore = function (authToken, sourceModule, subject, exact, size) {
+    this.requestMore = function (authToken, sourceModule, subject, exact) {
         let url = baseURl + '/services/rs/v1/experts/triples/new/subject';
         let headers = {"x-auth-token": authToken};
         let params = {
             sourceModule: sourceModule,
             subjectQuery: !exact ? subject : undefined,
             subjectMatch: exact ? subject : undefined,
-            size : size
+            size : 100000
         };
 
         return get(url, params, headers);

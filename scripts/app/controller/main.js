@@ -72,7 +72,7 @@ app
                         }
 
                         if (!response.data.data.length) {
-                            $scope.requestMore();
+                            $scope.requestMore('auto');
                             return;
                         }
 
@@ -131,7 +131,7 @@ app
                 });
         };
 
-        function submitAll (vip) {
+        function submitAll(vip) {
             let i = 0;
             let items = {};
             for (let item of $scope.data.triples.list) {
@@ -166,16 +166,15 @@ app
                 });
         };
 
-        $scope.requestMore = function () {
+        $scope.requestMore = function (auto) {
 
-           let subject = $scope.search.text || '';
-           let exact = $scope.search.exact ? true : false;
-           let source = $scope.search.module;
-           let size = $scope.search.size;
+            let subject = $scope.search.text || '';
+            let exact = $scope.search.exact ? true : false;
+            let source = $scope.search.module;
 
-            if(!exact) subject = subject.replace(/\s/g, '_');
+            if (!exact) subject = subject.replace(/\s/g, '_');
 
-            RestService.requestMore($scope.authToken, source, subject, exact, size)
+            RestService.requestMore($scope.authToken, source, subject, exact)
                 .then(function (data) {
                     $scope.reload();
                 })
