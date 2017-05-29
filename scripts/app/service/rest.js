@@ -50,7 +50,6 @@ app.service('RestService', ['$http', function ($http) {
         loading.show();
 
         return $http(req).then(onsuccess, onerror);
-        //return $http.post(url, data, headers).then(onsuccess, onerror);
     }
 
     /**/
@@ -109,7 +108,8 @@ app.service('RestService', ['$http', function ($http) {
         let params = {
             sourceModule: sourceModule,
             subjectQuery: !exact ? subject : undefined,
-            subjectMatch: exact ? subject : undefined
+            subjectMatch: exact ? subject : undefined,
+            size : size
         };
 
         return get(url, params, headers);

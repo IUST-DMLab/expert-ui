@@ -42,10 +42,10 @@
             <tbody>
             <tr ng-repeat='item in data.triples.list' ng-class-even="'even'" ng-class-odd="'odd'">
                 <td>{{($index)+1}}</td>
-                <td class="ltr right" style="">
+                <td class="rtl right" style="">
                     <a ng-href="{{PREFIX}}{{item.triple.predicate}}">{{item.triple.predicate | mapPrefix}}</a>
                 </td>
-                <td class="ltr right cell">
+                <td class="rtl right cell">
                     <span ng-if="item.triple.object.type!='Resource'">{{item.triple.object.value}}</span>
                     <a ng-href="{{PREFIX}}{{item.triple.object.value}}" ng-if="item.triple.object.type=='Resource'">{{item.triple.object.value|mapPrefix}}</a>
                 </td>

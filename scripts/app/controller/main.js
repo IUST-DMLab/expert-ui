@@ -122,7 +122,7 @@ app
                 });
         };
 
-        $scope.submitAll = function (vip) {
+        function submitAll (vip) {
             let i = 0;
             let items = {};
             for (let item of $scope.data.triples.list) {
@@ -136,6 +136,24 @@ app
             RestService.batchVote($scope.authToken, items)
                 .then(function (data) {
                     $scope.reload();
+                });
+        }
+
+        $scope.submitAll = function (vip) {
+            // Appending dialog to document.body to cover sidenav in docs app
+            let confirm = $mdDialog.confirm()
+                .title('آیا همه موارد ارسال شود؟')
+                .textContent('تمام سطرهای در حال نمایش به سرور ارسال می‌شود.')
+                .ariaLabel('Lucky day')
+                .ok('تایید')
+                .cancel('انصراف');
+
+            $mdDialog.show(confirm)
+                .then(function () {
+                    console.log('submit all, ', vip);
+                    submitAll(vip);
+                }, function () {
+
                 });
         };
 
