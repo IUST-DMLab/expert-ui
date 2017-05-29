@@ -101,7 +101,7 @@ app
                         return;
                     }
 
-                    $scope.data.triples.list = response.data.data;
+                    $scope.data.triples.list = response.data.data.sort(compare);
 
                     var titleRow = $scope.data.triples.list.filter(function (item) {
                         return item.triple.predicate.endsWith('label');
@@ -110,6 +110,14 @@ app
                     $scope.data.pageTitle = titleRow ? titleRow.triple.object.value : (($filter('mapPrefix')(subject.id) || subject.id));
                 });
         };
+
+        function compare(a, b) {
+            if (a.triple.predicate < b.triple.predicate)
+                return -1;
+            if (a.triple.predicate > b.triple.predicate)
+                return 1;
+            return 0;
+        }
 
         $scope.submit = function (item, vip) {
             var vote = item.vote || 'None';
