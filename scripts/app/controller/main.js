@@ -53,7 +53,8 @@ app
             $scope.authenticated = false;
             $scope.roles = [];
             $scope.isVipUser = undefined;
-
+            $scope.data = {subjects: {}, triples: {}};
+            $scope.search = {};
 
         };
 
