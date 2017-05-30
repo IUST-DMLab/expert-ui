@@ -55,7 +55,6 @@ app
             $scope.isVipUser = undefined;
             $scope.data = {subjects: {}, triples: {}};
             $scope.search = {};
-
         };
 
         $scope.reload = function () {
@@ -168,11 +167,10 @@ app
 
         $scope.requestMore = function (auto) {
 
-            let subject = $scope.search.text || '';
             let exact = $scope.search.exact ? true : false;
             let source = $scope.search.module;
-
-            if (!exact) subject = subject.replace(/\s/g, '_');
+            let subject = ($scope.search.text || '').replace(/\s/g, '_');
+            if(exact) subject = 'http://fkg.iust.ac.ir/resource/' + subject;
 
             RestService.requestMore($scope.authToken, source, subject, exact)
                 .then(function (data) {
