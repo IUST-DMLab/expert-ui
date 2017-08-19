@@ -15,8 +15,11 @@
                 <md-input-container>
                     <label>ماژول</label>
                     <md-select ng-model="search.module">
-                        <md-option ng-value=""></md-option>
-                        <md-option ng-repeat="m in modules" ng-value="m">{{m}}</md-option>
+                        <!--<md-option ng-value=""></md-option>-->
+                        <md-option ng-repeat="(i, m) in modules"
+                                   ng-value="m"
+                                   ng-selected="i===0 ? true : false">{{m}}
+                        </md-option>
                     </md-select>
                 </md-input-container>
 

@@ -109,7 +109,7 @@ app.service('RestService', ['$http', function ($http) {
             sourceModule: sourceModule,
             subjectQuery: !exact ? subject : undefined,
             subjectMatch: exact ? subject : undefined,
-            size : 100000
+            size: sourceModule.indexOf('wiki') !== -1 ? 100000 : undefined
         };
 
         return get(url, params, headers);
@@ -120,9 +120,9 @@ app.service('RestService', ['$http', function ($http) {
         var url = 'http://194.225.227.161:8091/rs/v1/triples/search';
         var params = {
             predicate: 'http://www.w3.org/2000/01/rdf-schema#label',
-            useRegexForPredicate : false,
+            useRegexForPredicate: false,
             subject: subject,
-            useRegexForSubject : false
+            useRegexForSubject: false
         };
 
         return get(url, params);

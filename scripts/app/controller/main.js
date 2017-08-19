@@ -13,7 +13,7 @@ app
 
         $scope.data = {subjects: {}, triples: {}};
         $scope.search = {};
-        $scope.modules = ['wiki', 'web_table_extractor', 'wiki_table_extractor', 'text'];
+        $scope.modules = ['raw_dependency_pattern', 'wiki', 'web_table_extractor', 'wiki_table_extractor', 'text'];
         $scope.PREFIX = 'http://194.225.227.161/mapping/html/triple.html?subject=';
 
         $scope.login = function (username, password) {
