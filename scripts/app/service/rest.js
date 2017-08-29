@@ -1,5 +1,5 @@
 app.service('RestService', ['$http', function ($http) {
-    var baseURl = 'http://194.225.227.161:8092';
+    var baseURl = 'http://dmls.iust.ac.ir:8092';
 
     var self = this;
     this.ingoing = 0;
@@ -55,7 +55,7 @@ app.service('RestService', ['$http', function ($http) {
     /**/
 
     this.getPrefixes = function () {
-        return get('http://194.225.227.161:8090/mapping/rest/v1/prefixes');
+        return get('http://dmls.iust.ac.ir:8090/mapping/rest/v1/prefixes');
     };
 
     this.login = function (username, password) {
@@ -117,7 +117,7 @@ app.service('RestService', ['$http', function ($http) {
 
     this.getLabel = function (subject) {
 
-        var url = 'http://194.225.227.161:8091/rs/v1/triples/search';
+        var url = 'http://dmls.iust.ac.ir:8091/rs/v1/triples/search';
         var params = {
             predicate: 'http://www.w3.org/2000/01/rdf-schema#label',
             useRegexForPredicate: false,

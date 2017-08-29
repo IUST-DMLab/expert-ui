@@ -108,6 +108,7 @@ app
                     })[0];
 
                     $scope.data.pageTitle = titleRow ? titleRow.triple.object.value : (($filter('mapPrefix')(subject.id) || subject.id));
+                    $scope.data.pageTitleUrl = titleRow ? titleRow.triple.subject : subject.id;
                 });
         };
 
